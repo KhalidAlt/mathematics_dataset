@@ -187,17 +187,16 @@ def polynomial_roots(value, sample_args, context=None):
       variable = sympy.Symbol(context.pop())
       equality = ops.Eq(polynomial_entity.handle.apply(variable), 0)
     template = random.choice([
-        'Let {equality}. What is {variable}?',
-        'Let {equality}. Calculate {variable}.',
-        'Suppose {equality}. What is {variable}?',
-        'Suppose {equality}. Calculate {variable}.',
-        'What is {variable} in {equality}?',
-        'Solve {equality} for {variable}.',
-        'Find {variable} such that {equality}.',
-        'Find {variable}, given that {equality}.',
-        'Determine {variable} so that {equality}.',
-        'Determine {variable}, given that {equality}.',
-        'Solve {equality}.'
+        'اذا كان {equality}. ما هي قيمة {variable}؟',
+        'اذا كان {equality}. احسب قيمة {variable}',
+        'اذا افترضنا {equality}. ما هي قيمة {variable}؟',
+        'ما هي قيمة {variable} في المعادلة الآتية {equality}؟',
+        'حل المعادلة الآتية {equality} بإيجاد قيمة {variable}.',
+        'أوجد قيمة {variable} بما يحقق المعادلة التالية {equality}.',
+        'أوجد قيمة {variable} اذا علمت أن {equality}.',
+        'جد قيمة {variable} اذا علمت أن  {equality}.',
+        'جد قيمة {variable} بناء على المعادلة المعطاة {equality}.',
+        'حل المعادلة الآتية {equality}.'
     ])
     return example.Problem(
         question=example.question(
