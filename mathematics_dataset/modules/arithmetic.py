@@ -168,8 +168,8 @@ def _add_question_or_entity(context, p, q, is_question):
           'أوجد ناتج {p} + {q}.',
           'احسب ما يلي {p} + {q}?',
       ])
-  else:
-    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
     return example.Problem(
         question=example.question(context, template, p=p, q=q),
@@ -187,16 +187,40 @@ def _sub_question_or_entity(context, p, q, is_question):
   value = p.value - q.value
 
   if is_question:
-    templates = [
-        '{p} - {q}',
-        'Work out {p} - {q}.',
-        'What is {p} minus {q}?',
-        'What is {p} take away {q}?',
-        'What is {q} less than {p}?',
-        'Subtract {q} from {p}.',
-        'Calculate {p} - {q}.',
-        'What is {p} - {q}?',
-    ]
+    
+    if os.environ.get('LANG') == 'en':
+
+      templates = [
+          '{p} - {q}',
+          'Work out {p} - {q}.',
+          'What is {p} minus {q}?',
+          'What is {p} take away {q}?',
+          'What is {q} less than {p}?',
+          'Subtract {q} from {p}.',
+          'Calculate {p} - {q}.',
+          'What is {p} - {q}?',
+      ]
+    
+    
+    elif os.environ.get('LANG') == 'ar':
+
+      templates = [
+          '{p} + {q}',
+          '{p}-{q}',
+          'احسب {p} - {q}.',
+          'ما هو حاصل {p} طرح {q}?',
+          'ما هو حاصل {p} - {q}?',
+          'أوجد ناتج عملية الطرح الآتية {p} - {q}?',
+          'أوجد ناتج ما يلي {q} - {p}?',
+          'اطرح {q} من {p}.',
+          'احسب ما يلي {p} - {q}.',
+          'أوجد ناتج {p} - {q}?',
+      ]
+      
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
     if sympy.Ge(p.value, q.value):
       # We calculate p - q, so the difference (|p - q|) is the correct answer.
       for adjective in ['distance', 'difference']:
