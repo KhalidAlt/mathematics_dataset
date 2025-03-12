@@ -348,10 +348,12 @@ def sequence_next_term(min_entropy, max_entropy):
   sequence_sample = display.NumberList(sequence_sample)
 
   template = random.choice([
-      'What is next in {sequence}?',
-      'What comes next: {sequence}?',
-      'What is the next term in {sequence}?',
-  ])
+      'ما هو الرقم التالي في هذه السلسلة العددية {sequence}؟',
+      'ما هو العدد الذي يلي هذه السلسلة العددية {sequence}؟',
+      'ما هو العدد التالي في هذه السلسلة العددية {sequence}؟',
+      'ما هو الرقم التالي في هذه السلسلة {sequence}؟',
+      'ما العدد الذي يجب ان يتلو في هذه السلسلة العددية : {sequence}؟',
+      'اذا كان لدينا سلسلة عددية بالشكل التالي {sequence} فما الرقم الذي يلي هذه السلسلة',  ])
   answer = sequence.term(num_terms + 1)
 
   return example.Problem(
