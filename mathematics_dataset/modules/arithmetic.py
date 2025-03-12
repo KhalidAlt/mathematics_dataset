@@ -200,7 +200,6 @@ def _sub_question_or_entity(context, p, q, is_question):
           'What is {p} - {q}?',
       ]
     
-    
     elif os.environ.get('LANG') == 'ar':
 
       templates = [
@@ -290,10 +289,43 @@ def add_or_sub_in_base(sample_args):
   base = random.randint(2, 16)
   if random.choice([False, True]):
     answer = p + q
-    template = 'In base {base}, what is {p} + {q}?'
+
+
+    if os.environ.get('LANG') == 'en':
+      template = 'In base {base}, what is {p} + {q}?'
+
+    elif os.environ.get('LANG') == 'ar':
+
+      template = random.choice(['اذا كانت الأرقام المعطاة تمثل بنظام العد {base} احسب ما يلي {p} + {q}?',
+                                'احسب {p} + {q} اذا علمت أن الأرقام تنتمي لنظام العد {base}.',
+                                'احسب {p} + {q} اذا علمت أن الأرقام المعطاة تمثل نظام العدد {base}.',
+                                'أوجد ناتج {p} + {q} في نظام العد {base}.',
+                                'أوجد ناتج الجمع {p} + {q} اذا علمت أن الأرقام تنتمي لنظام العد {base}.',])
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   else:
+  
     answer = p - q
-    template = 'In base {base}, what is {p} - {q}?'
+
+    if os.environ.get('LANG') == 'en':
+
+      template = 'In base {base}, what is {p} - {q}?'
+
+
+    elif os.environ.get('LANG') == 'ar':
+
+      template = random.choice(['اذا كانت الأرقام المعطاة تمثل بنظام العد {base} احسب ما يلي {p} - {q}?',
+                                    'احسب {p} - {q} اذا علمت أن الأرقام تنتمي لنظام العد {base}.',
+                                    'احسب {p} - {q} اذا علمت أن الأرقام المعطاة تمثل نظام العدد {base}.',
+                                    'أوجد ناتج {p} - {q} في نظام العد {base}.',
+                                    'أوجد ناتج الجمع {p} - {q} اذا علمت أن الأرقام تنتمي لنظام العد {base}.',
+          ])
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   return example.Problem(
       question=example.question(
           context,
