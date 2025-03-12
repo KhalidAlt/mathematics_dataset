@@ -265,8 +265,14 @@ def _solve_linear_system(degree, value, sample_args, context=None):
 
   if is_question:
     template = random.choice([
-        'Solve {equations} for {variable}.',
+        #'Solve {equations} for {variable}.',
+        'جد قيمة المتغير {variable} في المعادلة الآتية: {equations}',
+        'ما قيمة المتغير {variable} في المعادلة الآتية {equations}',
+        'حل المعادلة الخطية التالية {equations} بإيجاد قيمة {variable}'
+        'أوجد {variable} إذا كان {equations}',
+
     ])
+    return example.Problem(
     return example.Problem(
         example.question(
             context, template, equations=equations,
