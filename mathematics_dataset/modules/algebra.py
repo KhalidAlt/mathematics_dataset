@@ -32,7 +32,7 @@ from mathematics_dataset.util import display
 import numpy as np
 from six.moves import range
 import sympy
-
+import os
 
 _ENTROPY_TRAIN = (3, 10)
 _ENTROPY_INTERPOLATE = (8, 8)
@@ -186,18 +186,37 @@ def polynomial_roots(value, sample_args, context=None):
     else:
       variable = sympy.Symbol(context.pop())
       equality = ops.Eq(polynomial_entity.handle.apply(variable), 0)
-    template = random.choice([
-        'اذا كان {equality}. ما هي قيمة {variable}؟',
-        'اذا كان {equality}. احسب قيمة {variable}',
-        'اذا افترضنا {equality}. ما هي قيمة {variable}؟',
-        'ما هي قيمة {variable} في المعادلة الآتية {equality}؟',
-        'حل المعادلة الآتية {equality} بإيجاد قيمة {variable}.',
-        'أوجد قيمة {variable} بما يحقق المعادلة التالية {equality}.',
-        'أوجد قيمة {variable} اذا علمت أن {equality}.',
-        'جد قيمة {variable} اذا علمت أن  {equality}.',
-        'جد قيمة {variable} بناء على المعادلة المعطاة {equality}.',
-        'حل المعادلة الآتية {equality}.'
-    ])
+    
+    if os.environ.get('LANG') == 'en':
+      template = random.choice([
+          'Let {equality}. What is {variable}?',
+          'Let {equality}. Calculate {variable}.',
+          'Suppose {equality}. What is {variable}?',
+          'Suppose {equality}. Calculate {variable}.',
+          'What is {variable} in {equality}?',
+          'Solve {equality} for {variable}.',
+          'Find {variable} such that {equality}.',
+          'Find {variable}, given that {equality}.',
+          'Determine {variable} so that {equality}.',
+          'Determine {variable}, given that {equality}.',
+          'Solve {equality}.'
+      ])
+    elif os.environ.get('LANG') == 'ar':
+      template = random.choice([
+          'اذا كان {equality}. ما هي قيمة {variable}؟',
+          'اذا كان {equality}. احسب قيمة {variable}',
+          'اذا افترضنا {equality}. ما هي قيمة {variable}؟',
+          'ما هي قيمة {variable} في المعادلة الآتية {equality}؟',
+          'حل المعادلة الآتية {equality} بإيجاد قيمة {variable}.',
+          'أوجد قيمة {variable} بما يحقق المعادلة التالية {equality}.',
+          'أوجد قيمة {variable} اذا علمت أن {equality}.',
+          'جد قيمة {variable} اذا علمت أن  {equality}.',
+          'جد قيمة {variable} بناء على المعادلة المعطاة {equality}.',
+          'حل المعادلة الآتية {equality}.'
+      ])
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return example.Problem(
         question=example.question(
             context, template, equality=equality, variable=variable),
@@ -264,14 +283,24 @@ def _solve_linear_system(degree, value, sample_args, context=None):
   equations = ', '.join([str(equation) for equation in equations])
 
   if is_question:
-    template = random.choice([
-        #'Solve {equations} for {variable}.',
-        'جد قيمة المتغير {variable} في المعادلة الآتية: {equations}',
-        'ما قيمة المتغير {variable} في المعادلة الآتية {equations}',
-        'حل المعادلة الخطية التالية {equations} بإيجاد قيمة {variable}'
-        'أوجد {variable} إذا كان {equations}',
+      
+    if os.environ.get('LANG') == 'en':
 
-    ])
+      template = random.choice([
+          'Solve {equations} for {variable}.',
+      ])
+    elif os.environ.get('LANG') == 'ar':
+      template = random.choice([
+          #'Solve {equations} for {variable}.',
+          'جد قيمة المتغير {variable} في المعادلة الآتية: {equations}',
+          'ما قيمة المتغير {variable} في المعادلة الآتية {equations}',
+          'حل المعادلة الخطية التالية {equations} بإيجاد قيمة {variable}'
+          'أوجد {variable} إذا كان {equations}',
+
+      ])
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return example.Problem(
         example.question(
             context, template, equations=equations,
@@ -347,13 +376,26 @@ def sequence_next_term(min_entropy, max_entropy):
   sequence_sample = [sequence.term(n + 1) for n in range(num_terms)]
   sequence_sample = display.NumberList(sequence_sample)
 
-  template = random.choice([
-      'ما هو الرقم التالي في هذه السلسلة العددية {sequence}؟',
-      'ما هو العدد الذي يلي هذه السلسلة العددية {sequence}؟',
-      'ما هو العدد التالي في هذه السلسلة العددية {sequence}؟',
-      'ما هو الرقم التالي في هذه السلسلة {sequence}؟',
-      'ما العدد الذي يجب ان يتلو في هذه السلسلة العددية : {sequence}؟',
-      'اذا كان لدينا سلسلة عددية بالشكل التالي {sequence} فما الرقم الذي يلي هذه السلسلة',  ])
+  if os.environ.get('LANG') == 'en':
+    template = random.choice([
+      'What is next in {sequence}?',
+      'What comes next: {sequence}?',
+      'What is the next term in {sequence}?',
+  ])
+  
+  elif os.environ.get('LANG') == 'ar':
+
+    template = random.choice([
+        'ما هو الرقم التالي في هذه السلسلة العددية {sequence}؟',
+        'ما هو العدد الذي يلي هذه السلسلة العددية {sequence}؟',
+        'ما هو العدد التالي في هذه السلسلة العددية {sequence}؟',
+        'ما هو الرقم التالي في هذه السلسلة {sequence}؟',
+        'ما العدد الذي يجب ان يتلو في هذه السلسلة العددية : {sequence}؟',
+        'اذا كان لدينا سلسلة عددية بالشكل التالي {sequence} فما الرقم الذي يلي هذه السلسلة',  ])
+    
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   answer = sequence.term(num_terms + 1)
 
   return example.Problem(
