@@ -417,12 +417,27 @@ def div(value, sample_args, context=None):
   p, q = context.sample(sample_args, [p, q])
 
   if is_question:
-    template = random.choice([
-        'Divide {p} by {q}.',
-        '{p} divided by {q}',
-        'What is {p} divided by {q}?',
-        'Calculate {p} divided by {q}.',
-    ])
+
+    if os.environ.get('LANG') == 'en':
+
+      template = random.choice([
+          'Divide {p} by {q}.',
+          '{p} divided by {q}',
+          'What is {p} divided by {q}?',
+          'Calculate {p} divided by {q}.',
+      ])
+
+    elif os.environ.get('LANG') == 'ar':
+      template = random.choice([
+          'اقسم ما يلي {p} على {q}.',
+          '{p} مقسوم على {q}',
+          'ما هو حاصل قسمة {p} على {q}؟',
+          'احسب حاصل القسمة لما يلي {p} مقسوم على {q}.',
+      ])
+    
+
+
+
     return example.Problem(
         question=example.question(context, template, p=p, q=q),
         answer=answer
