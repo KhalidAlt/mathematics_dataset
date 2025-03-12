@@ -273,7 +273,6 @@ def _solve_linear_system(degree, value, sample_args, context=None):
 
     ])
     return example.Problem(
-    return example.Problem(
         example.question(
             context, template, equations=equations,
             variable=variable),
