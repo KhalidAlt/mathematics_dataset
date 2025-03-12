@@ -414,10 +414,20 @@ def sequence_nth_term(min_entropy, max_entropy):
   num_terms = random.randint(min_num_terms, min_num_terms + 3)
   sequence_sample = [sequence.term(n + 1) for n in range(num_terms)]
   sequence_sample = display.NumberList(sequence_sample)
+  
+  
+  if os.environ.get('LANG') == 'en':
+    template = random.choice([
+        'What is the {variable}\'th term of {sequence}?',
+    ])
 
-  template = random.choice([
-      'What is the {variable}\'th term of {sequence}?',
+  elif os.environ.get('LANG') == 'ar':
+      template = random.choice([
+      'ماهي قيمة الحد {variable}\'th للسلسلة التالية :{sequence} ؟',
   ])
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+  
   answer = sequence.sympy
 
   return example.Problem(
