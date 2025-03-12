@@ -1,4 +1,4 @@
-# Copyright 2018 DeepMind Technologies Limited.
+d# Copyright 2018 DeepMind Technologies Limited.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ from __future__ import print_function
 import functools
 import math
 import random
+import os 
 
 # Dependency imports
 from mathematics_dataset import example
@@ -138,19 +139,38 @@ def _add_question_or_entity(context, p, q, is_question):
   value = p.value + q.value
 
   if is_question:
-    template = random.choice([
-        '{p} + {q}',
-        '{p}+{q}',
-        'Work out {p} + {q}.',
-        'Add {p} and {q}.',
-        'Put together {p} and {q}.',
-        'Sum {p} and {q}.',
-        'Total of {p} and {q}.',
-        'Add together {p} and {q}.',
-        'What is {p} plus {q}?',
-        'Calculate {p} + {q}.',
-        'What is {p} + {q}?',
-    ])
+    if os.environ.get('LANG') == 'en':
+      template = random.choice([
+          '{p} + {q}',
+          '{p}+{q}',
+          'Work out {p} + {q}.',
+          'Add {p} and {q}.',
+          'Put together {p} and {q}.',
+          'Sum {p} and {q}.',
+          'Total of {p} and {q}.',
+          'Add together {p} and {q}.',
+          'What is {p} plus {q}?',
+          'Calculate {p} + {q}.',
+          'What is {p} + {q}?',
+      ])
+    
+    elif os.environ.get('LANG') == 'ar':
+      template = random.choice([
+          '{p} + {q}',
+          '{p}+{q}',
+          'احسب {p} + {q}.',
+          'اجمع {p} و {q}.',
+          'اجمع {p} + {q}.',
+          'ما هي قيمة {p} + {q}.',
+          'ما هو حاصل جمع {p} + {q}.',
+          'اجمع قيم {p} و {q}.',
+          'ما هو ناتج {p} زائد {q}?',
+          'أوجد ناتج {p} + {q}.',
+          'احسب ما يلي {p} + {q}?',
+      ])
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return example.Problem(
         question=example.question(context, template, p=p, q=q),
         answer=value)
