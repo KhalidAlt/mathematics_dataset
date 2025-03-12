@@ -42,6 +42,21 @@ flags.DEFINE_bool('show_dropped', False, 'Whether to print dropped questions')
 filtered_modules = collections.OrderedDict([])
 counts = {}
 
+import os
+
+def load_env_file(filepath='.env'):
+    try:
+        with open(filepath) as f:
+            for line in f:
+                line = line.strip()
+                # Skip empty lines and comments
+                if not line or line.startswith('#'):
+                    continue
+                if '=' in line:
+                    key, value = line.split('=', 1)
+                    os.environ[key] = value
+    except FileNotFoundError:
+        print(f"{filepath} not found.")
 
 def _make_entropy_fn(level, num_levels):
   """This returns a function that returns a subrange of entropy.
@@ -148,7 +163,8 @@ def sample_from_module(module):
 def main(unused_argv):
   """Prints Q&As from modules according to FLAGS.filter."""
   init_modules()
-
+  load_env_file()
+  
   text_wrapper = textwrap.TextWrapper(
       width=80, initial_indent=' ', subsequent_indent='  ')
 
