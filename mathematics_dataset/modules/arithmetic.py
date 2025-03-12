@@ -350,17 +350,37 @@ def mul(value, sample_args, context=None):
   answer = p.value * q.value
 
   if is_question:
-    templates = [
-        '{p}' + ops.MUL_SYMBOL + '{q}',
-        '{p} ' + ops.MUL_SYMBOL + ' {q}',
-        'Calculate {p}' + ops.MUL_SYMBOL + '{q}.',
-        'Work out {p} ' + ops.MUL_SYMBOL + ' {q}.',
-        'Multiply {p} and {q}.',
-        'Product of {p} and {q}.',
-        'What is the product of {p} and {q}?',
-        '{p} times {q}',
-        'What is {p} times {q}?',
-    ]
+    
+    if os.environ.get('LANG') == 'en':
+
+      templates = [
+          '{p}' + ops.MUL_SYMBOL + '{q}',
+          '{p} ' + ops.MUL_SYMBOL + ' {q}',
+          'Calculate {p}' + ops.MUL_SYMBOL + '{q}.',
+          'Work out {p} ' + ops.MUL_SYMBOL + ' {q}.',
+          'Multiply {p} and {q}.',
+          'Product of {p} and {q}.',
+          'What is the product of {p} and {q}?',
+          '{p} times {q}',
+          'What is {p} times {q}?',
+      ]
+
+    elif os.environ.get('LANG') == 'ar':
+      templates = [
+          '{p}' + ops.MUL_SYMBOL + '{q}',
+          '{p} ' + ops.MUL_SYMBOL + ' {q}',
+          'احسب {p}' + ops.MUL_SYMBOL + '{q}.',
+          'أوجد ناتج {p} ' + ops.MUL_SYMBOL + ' {q}.',
+          'أوجد حاصل ضرب ما يلي {p} * {q}.',
+          'ما هو حاصل ضرب {p} × {q}.',
+          'ما هو ناتج ضرب ما يلي {p} × {q}?',
+          '{p} × {q}',
+          'ما هو حاصل {p} ضرب {q}?',
+      ]
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     template = random.choice(templates)
     return example.Problem(
         question=example.question(context, template, p=p, q=q),
