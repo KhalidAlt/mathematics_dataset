@@ -33,46 +33,90 @@ import decimal
 # Dependency imports
 import sympy
 
+if os.environ.get('LANG') == 'en':
 
-# For converting integers to words:
-_INTEGER_LOW = [
-    'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
-    'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteeen', 'fifteen',
-    'sixteen', 'seventeen', 'eighteen', 'nineteen'
-]
-_INTEGER_MID = [
-    '', '', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty',
-    'ninety'
-]
-_INTEGER_HIGH = [
-    (int(1e12), 'trillion'), (int(1e9), 'billion'), (int(1e6), 'million'),
-    (int(1e3), 'thousand'), (100, 'hundred')
-]
-
-
-# For converting rationals to words:
-_SINGULAR_DENOMINATORS = [
-    '', '', 'half', 'third', 'quarter', 'fifth', 'sixth', 'seventh', 'eighth',
-    'ninth', 'tenth', 'eleventh', 'twelth', 'thirteenth', 'fourteenth',
-    'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth',
-    'twentieth'
-]
-_PLURAL_DENOMINATORS = [
-    '', '', 'halves', 'thirds', 'quarters', 'fifths', 'sixths', 'sevenths',
-    'eighths', 'ninths', 'tenths', 'elevenths', 'twelths', 'thirteenths',
-    'fourteenths', 'fifteenths', 'sixteenths', 'seventeenths', 'eighteenths',
-    'nineteenths', 'twentieths'
-]
+  # For converting integers to words:
+  _INTEGER_LOW = [
+      'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
+      'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteeen', 'fifteen',
+      'sixteen', 'seventeen', 'eighteen', 'nineteen'
+  ]
+  _INTEGER_MID = [
+      '', '', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty',
+      'ninety'
+  ]
+  _INTEGER_HIGH = [
+      (int(1e12), 'trillion'), (int(1e9), 'billion'), (int(1e6), 'million'),
+      (int(1e3), 'thousand'), (100, 'hundred')
+  ]
 
 
-# For converting ordinals to words:
-_ORDINALS = [
-    'zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh',
-    'eighth', 'ninth', 'tenth', 'eleventh', 'twelth', 'thirteenth',
-    'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth',
-    'nineteenth', 'twentieth'
+  # For converting rationals to words:
+  _SINGULAR_DENOMINATORS = [
+      '', '', 'half', 'third', 'quarter', 'fifth', 'sixth', 'seventh', 'eighth',
+      'ninth', 'tenth', 'eleventh', 'twelth', 'thirteenth', 'fourteenth',
+      'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth',
+      'twentieth'
+  ]
+  _PLURAL_DENOMINATORS = [
+      '', '', 'halves', 'thirds', 'quarters', 'fifths', 'sixths', 'sevenths',
+      'eighths', 'ninths', 'tenths', 'elevenths', 'twelths', 'thirteenths',
+      'fourteenths', 'fifteenths', 'sixteenths', 'seventeenths', 'eighteenths',
+      'nineteenths', 'twentieths'
+  ]
+
+
+  # For converting ordinals to words:
+  _ORDINALS = [
+      'zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh',
+      'eighth', 'ninth', 'tenth', 'eleventh', 'twelth', 'thirteenth',
+      'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth',
+      'nineteenth', 'twentieth'
+  ]
+
+
+
+elif os.environ.get('LANG') == 'ar':
+  _INTEGER_LOW = [
+      'صفر', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية',
+      'تسعة', 'عشرة', 'أحد عشر', 'اثنا عشر', 'ثلاثة عشر', 'أربعة عشر', 'خمسة عشر',
+      'ستة عشر', 'سبعة عشر', 'ثمانية عشر', 'تسعة عشر'
 ]
 
+  _INTEGER_MID = [
+      '', '', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون',
+      'تسعون'
+  ]
+
+  _INTEGER_HIGH = [
+      (int(1e12), 'تريليون'), (int(1e9), 'مليار'), (int(1e6), 'مليون'),
+      (int(1e3), 'ألف'), (100, 'مائة')
+  ]
+
+  # For converting rationals to words:
+  _SINGULAR_DENOMINATORS = [
+      '', '', 'نصف', 'ثلث', 'ربع', 'خمس', 'سدس', 'سبع', 'ثمن',
+      'تسع', 'عشر', 'أحد عشر', 'اثنا عشر', 'ثلاثة عشر', 'أربعة عشر',
+      'خمسة عشر', 'ستة عشر', 'سبعة عشر', 'ثمانية عشر', 'تسعة عشر',
+      'عشرون'
+  ]
+
+  _PLURAL_DENOMINATORS = [
+      '', '', 'أنصاف', 'أثلاث', 'أرباع', 'أخماس', 'أسداس', 'أسباع',
+      'أثمان', 'أتساع', 'أعشار', 'أحد عشر', 'اثنا عشر', 'ثلاثة عشر',
+      'أربعة عشر', 'خمسة عشر', 'ستة عشر', 'سبعة عشر', 'ثمانية عشر',
+      'تسعة عشر', 'عشرون'
+  ]
+
+  # For converting ordinals to words:
+  _ORDINALS = [
+      'صفر', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع',
+      'الثامن', 'التاسع', 'العاشر', 'الحادي عشر', 'الثاني عشر', 'الثالث عشر',
+      'الرابع عشر', 'الخامس عشر', 'السادس عشر', 'السابع عشر', 'الثامن عشر',
+      'التاسع عشر', 'العشرون'
+  ]
+else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
 class Decimal(object):
   """Display a value as a decimal."""
