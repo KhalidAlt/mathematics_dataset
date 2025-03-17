@@ -559,13 +559,28 @@ def _calculate(value, sample_args, context, add_sub, mul_div, length=None):
   context.sample_by_replacing_constants(sample_args, op)
 
   if is_question:
-    template = random.choice([
-        '{op}',
-        'What is {op}?',
-        'Evaluate {op}.',
-        'Calculate {op}.',
-        'What is the value of {op}?',
-    ])
+
+    if os.environ.get('LANG') == 'en':
+
+      template = random.choice([
+          '{op}',
+          'What is {op}?',
+          'Evaluate {op}.',
+          'Calculate {op}.',
+          'What is the value of {op}?',
+      ])
+
+    elif os.environ.get("LANG") == 'ar':
+      template = random.choice([
+          '{op} =',
+          'ما هو ناتج التالي {op}?',
+          'أوجد ناتج {op}.',
+          'احسب {op}.',
+          'ما هي قيمة ما يلي {op}?',
+      ])
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+    
     return example.Problem(
         question=example.question(context, template, op=op),
         answer=value)
