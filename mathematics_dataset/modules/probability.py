@@ -33,7 +33,7 @@ from mathematics_dataset.util import probability
 import numpy as np
 from six.moves import range
 from six.moves import zip
-
+import os
 
 _LETTERS = string.ascii_lowercase
 
@@ -233,13 +233,24 @@ def _sample_without_replacement_probability_question(
       break
 
   context = composition.Context()
-
-  template = random.choice([
-      '{random_variable_capitalize}. What is prob of {event}?',
-      '{random_variable_capitalize}. Give prob of {event}.',
-      'What is prob of {event} when {random_variable}?',
-      'Calculate prob of {event} when {random_variable}.',
-  ])
+  if os.environ.get('LANG') == 'en':
+    template = random.choice([
+        '{random_variable_capitalize}. What is prob of {event}?',
+        '{random_variable_capitalize}. Give prob of {event}.',
+        'What is prob of {event} when {random_variable}?',
+        'Calculate prob of {event} when {random_variable}.',
+    ])
+  elif os.environ.get('LANG') == 'ar':
+    template = random.choice([
+        '{random_variable_capitalize}. ما احتمال {event}؟',
+        '{random_variable_capitalize}. أوجد احتمال {event}.',
+        'ما احتمال {event} عندما يكون {random_variable}؟',
+        'احسب احتمال {event} عندما يكون {random_variable}.',
+    ])
+    
+  else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+  
   question = example.question(
       context,
       template,
