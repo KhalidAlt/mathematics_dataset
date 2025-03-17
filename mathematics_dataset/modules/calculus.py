@@ -30,7 +30,7 @@ from mathematics_dataset.util import display
 import numpy as np
 from six.moves import range
 import sympy
-
+import os
 
 _ENTROPY_TRAIN = (3, 10)
 _ENTROPY_INTERPOLATE = (8, 8)
@@ -85,29 +85,74 @@ def _generate_polynomial(num_variables, entropy, derivative_order,
 
 def _template(module_count, derivative_order, num_variables):
   """Selects appropriate template."""
-  templates = [
-      'Find the {nth} derivative of {eq} wrt {var}.',
-      'What is the {nth} derivative of {eq} wrt {var}?',
-  ]
-  if derivative_order == 1:
-    templates += [
-        'Differentiate {eq} with respect to {var}.',
-        'Differentiate {eq} wrt {var}.',
-        'What is the derivative of {eq} wrt {var}?',
+  if os.environ.get('LANG') == 'en':
+
+    templates = [
+        'Find the {nth} derivative of {eq} wrt {var}.',
+        'What is the {nth} derivative of {eq} wrt {var}?',
     ]
+
+  elif os.environ.get('LANG') == 'ar':
+    templates = [
+        'أوجد المشتقة الـ{nth} للدالة {eq} بالنسبة إلى {var}.'
+        'ما هي المشتقة الـ{nth} للدالة {eq} بالنسبة إلى {var}؟',
+    ]
+
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+  if derivative_order == 1:
+    if os.environ.get('LANG') == 'en':
+      templates += [
+          'Differentiate {eq} with respect to {var}.',
+          'Differentiate {eq} wrt {var}.',
+          'What is the derivative of {eq} wrt {var}?',
+      ]
+    elif os.environ.get('LANG') == 'ar':
+      templates += [
+      'اشتق الدالة {eq} بالنسبة إلى {var}.',
+      'أوجد مشتقة الدالة {eq} بالنسبة إلى {var}.',
+      'ما هي مشتقة الدالة {eq} بالنسبة إلى {var}؟',
+      ]
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
   derivative_variable_is_unambiguous = num_variables == 1 and module_count == 1
   if derivative_variable_is_unambiguous:
-    templates += [
-        'Find the {nth} derivative of {eq}.',
-        'What is the {nth} derivative of {eq}?',
-    ]
-    if derivative_order == 1:
+    
+    if os.environ.get('LANG') == 'en':
+
       templates += [
-          'Differentiate {eq}.',
-          'What is the derivative of {eq}?',
+          'Find the {nth} derivative of {eq}.',
+          'What is the {nth} derivative of {eq}?',
       ]
 
+    elif os.environ.get('LANG') == 'ar':
+      templates += [
+    'أوجد المشتقة الـ{nth} للدالة {eq}.',
+    'ما هي المشتقة الـ{nth} للدالة {eq}؟',
+      ]
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+    
+
+    if derivative_order == 1:
+      if os.environ.get('LANG') == 'en':
+
+        templates += [
+            'Differentiate {eq}.',
+            'What is the derivative of {eq}?',
+        ]
+
+      elif os.environ.get('LANG') == 'ar':
+        templates += [
+          'اشتق الدالة {eq}.',
+          'ما هي مشتقة الدالة {eq}؟',        
+        ]
+
+      else:
+        raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
   return random.choice(templates)
 
 
