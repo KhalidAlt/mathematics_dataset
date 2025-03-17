@@ -362,15 +362,32 @@ def is_factor(value, sample_args, context=None):
 
   (entity,) = context.sample(sample_args, [integer])
 
-  templates = [
-      'Is {maybe_factor} a factor of {value}?',
-      'Is {value} a multiple of {maybe_factor}?',
-      'Does {maybe_factor} divide {value}?',
-  ]
-  if maybe_factor == 2:
-    templates += [
-        'Is {value} even?',
+  if os.environ.get('LANG') == 'en':
+    templates = [
+        'Is {maybe_factor} a factor of {value}?',
+        'Is {value} a multiple of {maybe_factor}?',
+        'Does {maybe_factor} divide {value}?',
     ]
+  elif os.environ.get('LANG') == 'ar':
+    templates = [
+        'هل {maybe_factor} عامل من عوامل {value}؟',
+        'هل {value} من مضاعفات {maybe_factor}؟',
+        'هل {maybe_factor} يقسم {value}؟',
+    ]
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+  if maybe_factor == 2:
+    if os.environ.get('LANG') == 'en':
+      templates += [
+          'Is {value} even?',
+      ]
+    elif os.environ.get('LANG') == 'ar':
+      templates += [
+          'هل {value} عدد زوجي؟',
+      ]
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   template = random.choice(templates)
 
   answer = integer % maybe_factor == 0
