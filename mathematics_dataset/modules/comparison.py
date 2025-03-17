@@ -330,7 +330,6 @@ def _kth_biggest_list_question(context, entities, adjective, answer):
     template = 'What is the {adjective} value in ' + values_template + '?'
   elif os.environ.get('LANG') == 'ar':
     template = 'ما هي {adjective} قيمة في ' + values_template + '؟'
-
   else:
     raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
@@ -444,9 +443,18 @@ def _closest_in_list_question(context, entities, target, adjective, answer):
   """Ask for the closest to a given value in a list."""
   entity_dict, values_template = _entities_to_list(entities)
 
+
+  if os.environ.get('LANG') == 'en':
+    template = 'What is the {adjective} to {target} in '
+  elif os.environ.get('LANG') == 'ar':
+    template = 'ما هو {adjective} إلى {target} في '
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
   question = example.question(
       context,
-      'What is the {adjective} to {target} in ' + values_template + '?',
+      template + values_template + '?',
       adjective=adjective, target=target, **entity_dict)
   return example.Problem(question=question, answer=answer.handle)
 
