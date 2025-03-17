@@ -33,7 +33,7 @@ import six
 from six.moves import range
 from six.moves import zip
 import sympy
-
+import os
 
 # Allowed symbols. Don't allow "e", as sympy can hang when printing it as a
 # function symbol (and it's reserved for exponent).
