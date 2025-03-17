@@ -174,10 +174,18 @@ def _add_question_or_entity(context, p, q, is_question):
         question=example.question(context, template, p=p, q=q),
         answer=value)
   else:
+
+    if os.environ.get('LANG') == 'en':
+      description='Let {self} = {p} + {q}.'
+    elif os.environ.get('LANG') == 'ar':
+      description = 'لتكن {self} = {p} + {q}.'
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return composition.Entity(
         context=context,
         value=value,
-        description='Let {self} = {p} + {q}.',
+        description=description,
         p=p, q=q)
 
 
@@ -229,10 +237,20 @@ def _sub_question_or_entity(context, p, q, is_question):
         question=example.question(context, template, p=p, q=q),
         answer=value)
   else:
+
+    if os.environ.get('LANG') == 'en':
+      description='Let {self} = {p} - {q}.'
+    elif os.environ.get('LANG') == 'ar':
+      description = 'لتكن {self} = {p} - {q}.'
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
+
     return composition.Entity(
         context=context,
         value=value,
-        description='Let {self} = {p} - {q}.',
+        description=description,
         p=p, q=q)
 
 
@@ -387,10 +405,19 @@ def mul(value, sample_args, context=None):
         answer=answer
     )
   else:
+
+    if os.environ.get('LANG') == 'en':
+      description='Let {self} = {p} * {q}.'
+    elif os.environ.get('LANG') == 'ar':
+      description = 'لتكن {self} = {p} * {q}.'
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
     return composition.Entity(
         context=context,
         value=answer,
-        description='Let {self} = {p} * {q}.',
+        description=description,
         p=p, q=q)
 
 
@@ -445,10 +472,19 @@ def div(value, sample_args, context=None):
         answer=answer
     )
   else:
+
+    if os.environ.get('LANG') == 'en':
+      description='Let {self} be {p} divided by {q}.'
+    elif os.environ.get('LANG') == 'ar':
+      description = 'لتكن {self} ناتج قسمة {p} على {q}.'
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
     return composition.Entity(
         context=context,
         value=answer,
-        description='Let {self} be {p} divided by {q}.',
+        description=description,
         p=p, q=q)
 
 
@@ -585,11 +621,20 @@ def _calculate(value, sample_args, context, add_sub, mul_div, length=None):
         question=example.question(context, template, op=op),
         answer=value)
   else:
+
+    if os.environ.get('LANG') == 'en':
+      description='Let {self} be {op}.'
+    elif os.environ.get('LANG') == 'ar':
+      description = 'لتكن {self} هي {op}.'
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
     return composition.Entity(
         context=context,
         value=value,
         expression=op,
-        description='Let {self} be {op}.',
+        description=description,
         op=op)
 
 
