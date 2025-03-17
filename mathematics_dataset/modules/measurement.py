@@ -163,11 +163,35 @@ DIMENSIONS = [LENGTH, TIME, TIME_YEARLY, MASS, VOLUME]
 
 
 def pluralize(name):
-  if name == 'century':
-    return 'centuries'
-  if name == 'millennium':
-    return 'millennia'
-  return name + 's'
+  if os.environ.get('LANG') == 'en':
+    if name == 'century':
+      return 'centuries'
+    if name == 'millennium':
+      return 'millennia'
+    return name + 's'
+  elif os.environ.get('LANG') == 'ar':
+    plurals = {
+        'سنة': 'سنوات',
+        'شهر': 'أشهر',
+        'أسبوع': 'أسابيع',
+        'يوم': 'أيام',
+        'ساعة': 'ساعات',
+        'دقيقة': 'دقائق',
+        'ثانية': 'ثوانٍ',
+        'قرن': 'قرون',
+        'عقد': 'عقود',
+        'ألفية': 'آلاف السنين',
+        'متر': 'أمتار',
+        'كيلومتر': 'كيلومترات',
+        'سنتيمتر': 'سنتيمترات',
+        'ملليمتر': 'ملليمترات',
+        'لتر': 'لترات',
+        'ملليلتر': 'ملليلترات',
+        'جرام': 'جرامات',
+        'كيلوجرام': 'كيلوجرامات',
+        'طن': 'أطنان',
+    }
+  return plurals[name]
 
 
 def _factor_non_decimal(value):
