@@ -326,8 +326,16 @@ def _kth_biggest_list_question(context, entities, adjective, answer):
   """Ask for the biggest (or smallest, or second biggest, etc) in a list."""
   entity_dict, values_template = _entities_to_list(entities)
 
+  if os.environ.get('LANG') == 'en':
+    template = 'What is the {adjective} value in ' + values_template + '?'
+  elif os.environ.get('LANG') == 'ar':
+    template = 'ما هي {adjective} قيمة في ' + values_template + '؟'
+
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   question = example.question(
-      context, 'What is the {adjective} value in ' + values_template + '?',
+      context, template,
       adjective=adjective, **entity_dict)
   return example.Problem(question=question, answer=answer.handle)
 
@@ -494,15 +502,34 @@ def sort(sample_args, count=None):
   unsorted_dict, unsorted_template = _entities_to_list(entities)
 
   ascending = random.choice([False, True])
-  templates = [
-      'Sort ' + unsorted_template + ' in {direction} order.',
-      'Put ' + unsorted_template + ' in {direction} order.',
-  ]
-  if ascending:
-    templates.append('Sort ' + unsorted_template + '.')
-    direction = random.choice(['ascending', 'increasing'])
+  
+  if os.environ.get('LANG') == 'en':
+    templates = [
+        'Sort ' + unsorted_template + ' in {direction} order.',
+        'Put ' + unsorted_template + ' in {direction} order.',
+    ]
+    if ascending:
+      templates.append('Sort ' + unsorted_template + '.')
+      direction = random.choice(['ascending', 'increasing'])
+    else:
+      direction = random.choice(['descending', 'decreasing'])
+
+  elif os.environ.get('LANG') == 'ar':
+
+    templates = [
+        'رتب ' + unsorted_template + ' بترتيب {direction}.',
+        'ضع ' + unsorted_template + ' بترتيب {direction}.',
+    ]
+
+    if ascending:
+        templates.append('رتب ' + unsorted_template + '.')
+        direction = random.choice(['تصاعدي', 'متزايد'])
+    else:
+        direction = random.choice(['تنازلي', 'متناقص'])
+
   else:
-    direction = random.choice(['descending', 'decreasing'])
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   template = random.choice(templates)
 
   sorted_entities = sorted(
