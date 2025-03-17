@@ -30,7 +30,7 @@ from mathematics_dataset.util import display
 import numpy as np
 from six.moves import range
 import sympy
-
+import os
 
 _ENTROPY_TRAIN = (3, 10)
 _ENTROPY_INTERPOLATE = (8, 8)
@@ -100,16 +100,41 @@ def _make_comparison_question(context, left, right):
     if random.choice([False, True]):
       answer = (
           left.handle if sympy.Gt(left.value, right.value) else right.handle)
-      template = random.choice([
-          'Which is bigger: {left} or {right}?',
-          'Which is greater: {left} or {right}?',
-      ])
+      
+      if os.environ.get('LANG') == 'en':
+        template = random.choice([
+            'Which is bigger: {left} or {right}?',
+            'Which is greater: {left} or {right}?',
+        ])
+      
+      elif os.environ.get('LANG') == 'ar':
+        template = random.choice([
+          'أيهما أكبر: {left} أم {right}؟',
+          'أيهما أعلى قيمة: {left} أم {right}؟',        
+        ])
+
+      else:
+        raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+      
     else:
       answer = (
           left.handle if sympy.Lt(left.value, right.value) else right.handle)
-      template = random.choice([
-          'Which is smaller: {left} or {right}?',
-      ])
+      
+      if os.environ.get('LANG') == 'en':
+
+        template = random.choice([
+            'Which is smaller: {left} or {right}?',
+        ])
+
+      elif os.environ.get('LANG') == 'ar':
+        template = random.choice([
+          'أيهما أصغر: {left} أم {right}؟',
+          'أيهما أقل قيمة: {left} أم {right}؟',        
+        ])
+
+      else:
+        raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return example.Problem(
         question=example.question(context, template, left=left, right=right),
         answer=answer)
@@ -123,44 +148,86 @@ def _make_comparison_question(context, left, right):
       '!=': sympy.Ne,
   }
 
-  templates = {
-      '<': [
-          'Is {left} ' + ops.LT_SYMBOL + ' {right}?',
-          'Is {left} less than {right}?',
-          'Is {left} smaller than {right}?',
-      ],
-      '<=': [
-          'Is {left} ' + ops.LE_SYMBOL + ' {right}?',
-          'Is {left} less than or equal to {right}?',
-          'Is {left} at most {right}?',
-          'Is {left} at most as big as {right}?',
-      ],
-      '>': [
-          'Is {left} ' + ops.GT_SYMBOL + ' {right}?',
-          'Is {left} greater than {right}?',
-          'Is {left} bigger than {right}?',
-      ],
-      '>=': [
-          'Is {left} ' + ops.GE_SYMBOL + ' {right}?',
-          'Is {left} greater than or equal to {right}?',
-          'Is {left} at least {right}?',
-          'Is {left} at least as big as {right}?',
-      ],
-      '=': [
-          'Does {left} ' + ops.EQ_SYMBOL + ' {right}?',
-          'Are {left} and {right} equal?',
-          'Is {left} equal to {right}?',
-          'Do {left} and {right} have the same value?',
-      ],
-      '!=': [
-          'Is {left} ' + ops.NE_SYMBOL + ' {right}?',
-          'Is {left} not equal to {right}?',
-          'Are {left} and {right} unequal?',
-          'Are {left} and {right} nonequal?',
-          'Are {left} and {right} non-equal?',
-          'Do {left} and {right} have different values?',
-      ],
-  }
+  if os.environ.get('LANG') == 'en':
+    templates = {
+        '<': [
+            'Is {left} ' + ops.LT_SYMBOL + ' {right}?',
+            'Is {left} less than {right}?',
+            'Is {left} smaller than {right}?',
+        ],
+        '<=': [
+            'Is {left} ' + ops.LE_SYMBOL + ' {right}?',
+            'Is {left} less than or equal to {right}?',
+            'Is {left} at most {right}?',
+            'Is {left} at most as big as {right}?',
+        ],
+        '>': [
+            'Is {left} ' + ops.GT_SYMBOL + ' {right}?',
+            'Is {left} greater than {right}?',
+            'Is {left} bigger than {right}?',
+        ],
+        '>=': [
+            'Is {left} ' + ops.GE_SYMBOL + ' {right}?',
+            'Is {left} greater than or equal to {right}?',
+            'Is {left} at least {right}?',
+            'Is {left} at least as big as {right}?',
+        ],
+        '=': [
+            'Does {left} ' + ops.EQ_SYMBOL + ' {right}?',
+            'Are {left} and {right} equal?',
+            'Is {left} equal to {right}?',
+            'Do {left} and {right} have the same value?',
+        ],
+        '!=': [
+            'Is {left} ' + ops.NE_SYMBOL + ' {right}?',
+            'Is {left} not equal to {right}?',
+            'Are {left} and {right} unequal?',
+            'Are {left} and {right} nonequal?',
+            'Are {left} and {right} non-equal?',
+            'Do {left} and {right} have different values?',
+        ],
+    }
+  elif os.environ.get('LANG') == 'ar':
+
+    templates = {
+        '<': [
+            'هل {left} ' + ops.LT_SYMBOL + ' {right}؟',
+            'هل {left} أقل من {right}؟',
+            'هل {left} أصغر من {right}؟',
+        ],
+        '<=': [
+            'هل {left} ' + ops.LE_SYMBOL + ' {right}؟',
+            'هل {left} أقل من أو يساوي {right}؟',
+            'هل {left} على الأكثر {right}؟',
+            'هل {left} لا يتجاوز {right}؟',
+        ],
+        '>': [
+            'هل {left} ' + ops.GT_SYMBOL + ' {right}؟',
+            'هل {left} أكبر من {right}؟',
+            'هل {left} أعظم من {right}؟',
+        ],
+        '>=': [
+            'هل {left} ' + ops.GE_SYMBOL + ' {right}؟',
+            'هل {left} أكبر من أو يساوي {right}؟',
+            'هل {left} على الأقل {right}؟',
+            'هل {left} ليس أقل من {right}؟',
+        ],
+        '=': [
+            'هل {left} ' + ops.EQ_SYMBOL + ' {right}؟',
+            'هل {left} يساوي {right}؟',
+            'هل {left} و {right} متساويان؟',
+            'هل لـ{left} و {right} نفس القيمة؟',
+        ],
+        '!=': [
+            'هل {left} ' + ops.NE_SYMBOL + ' {right}؟',
+            'هل {left} لا يساوي {right}؟',
+            'هل {left} و {right} غير متساويين؟',
+            'هل {left} و {right} مختلفان؟',
+            'هل لـ{left} و {right} قيمتان مختلفتان؟',
+        ],
+    }
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
   comparison = random.choice(list(comparisons.keys()))
   template = random.choice(templates[comparison])
