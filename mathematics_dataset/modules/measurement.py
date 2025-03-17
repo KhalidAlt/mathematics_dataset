@@ -229,17 +229,42 @@ def _conversion_decimal(context, is_train, is_extrapolation):
     if train_test_split.is_train(base_value) == is_train:
       break
 
-  templates = [
-      'How many {target_name} are there in {base_value} {base_name}?',
-      'What is {base_value} {base_name} in {target_name}?',
-      'Convert {base_value} {base_name} to {target_name}.',
-  ]
+  if os.environ.get('LANG') == 'en':
+      templates = [
+          'How many {target_name} are there in {base_value} {base_name}?',
+          'What is {base_value} {base_name} in {target_name}?',
+          'Convert {base_value} {base_name} to {target_name}.',
+      ]
+
+  elif os.environ.get('LANG') == 'ar':
+      templates = [
+          'كم عدد {target_name} في {base_value} {base_name}؟',
+          'ما هي قيمة {base_value} {base_name} بوحدة {target_name}؟',
+          'حول {base_value} {base_name} to {target_name}.'
+      ]
+
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   if base_unit.symbol is not None:
-    templates += [
-        'How many {target_name} are there in {base_value}{base_symbol}?',
-        'What is {base_value}{base_symbol} in {target_name}?',
-        'Convert {base_value}{base_symbol} to {target_name}.',
-    ]
+    if os.environ.get('LANG') == 'en':
+        templates += [
+            'How many {target_name} are there in {base_value}{base_name}?',
+            'What is {base_value}{base_name} in {target_name}?',
+            'Convert {base_value}{base_name} to {target_name}.',
+        ]
+
+    elif os.environ.get('LANG') == 'ar':
+        templates += [
+            'كم عدد {target_name} في {base_value}{base_name}؟',
+            'ما هي قيمة {base_value}{base_name} بوحدة {target_name}؟',
+            'حول {base_value}{base_symbol} إلى {target_name}.',
+        ]
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
+
   template = random.choice(templates)
 
   base_name = pluralize(base_unit.name)
