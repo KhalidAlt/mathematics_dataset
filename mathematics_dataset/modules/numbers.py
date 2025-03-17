@@ -606,6 +606,9 @@ def gcd(value, sample_args, context=None):
     elif os.environ.get('LANG') == 'ar':
       description = 'لتكن {self} هي {adjective} للعددين {p} و {q}.'
       
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return composition.Entity(
         context=context,
         value=value,
@@ -636,20 +639,43 @@ def div_remainder(value, sample_args, context=None):
   p, q = context.sample(sample_args, [p, q])
 
   if is_question:
-    template = random.choice([
-        'Calculate the remainder when {p} is divided by {q}.',
-        'What is the remainder when {p} is divided by {q}?',
-    ])
+
+    if os.environ.get('LANG') == 'en':
+      template = random.choice([
+          'Calculate the remainder when {p} is divided by {q}.',
+          'What is the remainder when {p} is divided by {q}?',
+      ])
+    elif os.environ.get('LANG') == 'ar':
+      template = random.choice([
+          'احسب الباقي عند قسمة {p} على {q}.',
+          'ما هو الباقي عند قسمة {p} على {q}؟',
+      ])
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return example.Problem(
         question=example.question(
             context, template, p=p.expression_else_handle,
             q=q.expression_else_handle),
         answer=value)
   else:
+    
+
+    if os.environ.get('LANG') == 'en':
+      description='Let {self} be the remainder when {p} is divided by {q}.',
+
+    elif os.environ.get('LANG') == 'ar':
+      description = 'لتكن {self} هي الباقي عند قسمة {p} على {q}.'
+      
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
     return composition.Entity(
         context=context,
         value=value,
-        description='Let {self} be the remainder when {p} is divided by {q}.',
+        description=description,
         p=p, q=q)
 
 
