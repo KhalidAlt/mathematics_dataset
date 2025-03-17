@@ -308,14 +308,35 @@ def is_prime(value, sample_args, context=None):
 
   if random.choice([False, True]) and integer != 1:
     answer = not is_prime_
-    attribute_name = random.choice(['composite', 'a composite number'])
+
+    if os.environ.get('LANG') == 'en':
+      attribute_name = random.choice(['composite', 'a composite number'])
+    elif os.environ.get('LANG') == 'ar':
+      attribute_name = random.choice(['مركب', 'عدد مركب'])
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   else:
     answer = is_prime_
-    attribute_name = random.choice(['prime', 'a prime number'])
+    
+    if os.environ.get('LANG') == 'en':
+      attribute_name = random.choice(['prime', 'a prime number'])
+    elif os.environ.get('LANG') == 'ar':
+      attribute_name = random.choice(['أولي', 'عدد أولي'])
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+  
 
+  if os.environ.get('LANG') == 'en':
+    template = 'Is {integer} {attribute}?'
+  elif os.environ.get('LANG') == 'ar':
+    template = 'هل {integer} {attribute}؟'
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+  
   return example.Problem(
       question=example.question(
-          context, 'Is {integer} {attribute}?',
+          context, template
           integer=integer_entity.expression_else_handle,
           attribute=attribute_name),
       answer=answer)
