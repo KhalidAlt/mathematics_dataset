@@ -205,11 +205,23 @@ def evaluate(value, sample_args, context=None):
         question=example.question(context, template, composed=composed),
         answer=value)
   else:
+
+    if os.environ.get('LANG') == 'en':
+
+      description = 'Let {self} be {composed}.'
+      
+    elif os.environ.get('LANG') == 'ar':
+      description = 'لتكن {self} هي {composed}.'
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
     return composition.Entity(
         context=context,
         value=value,
         expression=composed,
-        description='Let {self} be {composed}.',
+        description=description,
         composed=composed)
 
 

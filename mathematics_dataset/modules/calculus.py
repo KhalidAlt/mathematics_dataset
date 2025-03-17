@@ -231,7 +231,7 @@ def _differentiate_polynomial(value, sample_args, context, num_variables):
       description = 'Let {fn}({variables}) be the {nth} derivative of {eq}.'
       
     elif os.environ.get('LANG') == 'ar':
-      description = 'لتكن {fn}({variables}) هي المشتقة الـ{nth} للدالة {eq}.'
+      description = 'لتكن {fn}({variables}) هي المشتقة {nth} للدالة {eq}.'
 
     else:
       raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
