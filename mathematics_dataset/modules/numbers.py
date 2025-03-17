@@ -211,13 +211,27 @@ def round_number(value, sample_args, context=None):
       # Write the rounding value as a word instead.
       round_to = display.StringNumber(round_to,
                                       join_number_words_with_hyphens=False)
-    description = 'the nearest {round_to}'.format(round_to=round_to)
+    
+    if os.environ.get('LANG') == 'en':
+      description = 'the nearest {round_to}'.format(round_to=round_to)
+    elif os.environ.get('LANG') == 'ar':
+      description = 'لأقرب {round_to}'.format(round_to=round_to)
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   elif power == 0 and random.choice([False, True]):
     # Round to nearest integer.
     description = 'the nearest integer'
   else:
-    # Round to decimal places.
-    description = random.choice(['{dps} decimal place', '{dps} dp'])
+
+    if os.environ.get('LANG') == 'en':
+      # Round to decimal places.
+      description = random.choice(['{dps} decimal place', '{dps} dp'])
+    elif os.environ.get('LANG') == 'ar':
+      description = random.choice(['{dps} منزلة عشرية', '{dps} منزلة عشرية'])
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     if power != -1:
       # Plural
       description += 's'
@@ -226,10 +240,23 @@ def round_number(value, sample_args, context=None):
       dps = display.StringNumber(dps)
     description = description.format(dps=dps)
 
-  template = random.choice([
-      'Round {input} to {description}.',
-      'What is {input} rounded to {description}?',
-  ])
+
+
+  if os.environ.get('LANG') == 'en':
+    template = random.choice([
+        'Round {input} to {description}.',
+        'What is {input} rounded to {description}?',
+    ])
+
+  elif os.environ.get('LANG') == 'ar':
+    template = random.choice([
+        'قرّب {input} إلى {description}.',
+        'ما قيمة {input} بعد تقريبه إلى {description}؟',
+    ])
+
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
 
   return example.Problem(
       question=example.question(
