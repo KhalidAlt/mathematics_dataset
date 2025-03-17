@@ -191,6 +191,10 @@ def pluralize(name):
         'كيلوجرام': 'كيلوجرامات',
         'طن': 'أطنان',
     }
+  
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   return plurals[name]
 
 
