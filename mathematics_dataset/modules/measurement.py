@@ -394,9 +394,8 @@ def time(is_train):
 
 
     elif os.environ.get('LANG') == 'ar':
-
       template = random.choice([
-          'ما الوقت بعد {duration} دقيقة من {end}؟',
+          'ما الوقت بعد {duration} دقيقة من {start}؟',
       ])
 
     else:
