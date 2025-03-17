@@ -150,10 +150,17 @@ def place_value(value, sample_args, context=None):
   place_name = place_names[place - 1]
   answer = sympy.Integer(integer_as_string[num_digits - place])
 
+  if os.environ.get('LANG') == 'en':
+    template = 'What is the {place_name} digit of {integer}?'
+  elif os.environ.get('LANG') == 'ar':
+    template = 'ما الرقم الموجود في خانة {place_name} في العدد {integer}؟'
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   return example.Problem(
       question=example.question(
           context,
-          'What is the {place_name} digit of {integer}?',
+          template,
           place_name=place_name, integer=entity.expression_else_handle),
       answer=answer)
 
