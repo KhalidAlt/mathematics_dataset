@@ -30,7 +30,7 @@ from mathematics_dataset.util import composition
 from mathematics_dataset.util import display
 import six
 import sympy
-
+import os
 
 def _make_modules(is_train):
   """Returns modules, with split based on the boolean `is_train`."""
@@ -63,50 +63,100 @@ def test_extra():
 Unit = collections.namedtuple('Unit', ('name', 'symbol'))
 
 
-MICRO_SYMBOL = 'u'
+
+if os.environ.get('LANG') == 'en':
+  MICRO_SYMBOL = 'u'
+
+  LENGTH = {
+      Unit('meter', 'm'): 1,
+      Unit('kilometer', 'km'): 1000,
+      Unit('centimeter', 'cm'): sympy.Rational(1, 100),
+      Unit('millimeter', 'mm'): sympy.Rational(1, 1000),
+      Unit('micrometer', 'um'): sympy.Rational(1, 1e6),
+      Unit('nanometer', 'nm'): sympy.Rational(1, 1e9),
+  }
+
+  TIME = {
+      Unit('second', 's'): 1,
+      Unit('minute', None): 60,
+      Unit('hour', None): 60*60,
+      Unit('day', None): 24*60*60,
+      Unit('week', None): 7*24*60*60,
+      Unit('millisecond', 'ms'): sympy.Rational(1, 1e3),
+      Unit('microsecond', MICRO_SYMBOL + 's'): sympy.Rational(1, 1e6),
+      Unit('nanosecond', 'ns'): sympy.Rational(1, 1e9),
+  }
+
+  TIME_YEARLY = {
+      Unit('year', None): 1,
+      Unit('decade', None): 10,
+      Unit('century', None): 100,
+      Unit('millennium', None): 1000,
+      Unit('month', None): sympy.Rational(1, 12),
+  }
+
+  MASS = {
+      Unit('kilogram', 'kg'): 1,  # Yes, the *kilo*gram is the SI base unit.
+      Unit('tonne', 't'): 1000,
+      Unit('gram', 'g'): sympy.Rational(1, 1e3),
+      Unit('milligram', 'mg'): sympy.Rational(1, 1e6),
+      Unit('microgram', MICRO_SYMBOL + 'g'): sympy.Rational(1, 1e9),
+      Unit('nanogram', 'ng'): sympy.Rational(1, 1e12),
+  }
+
+  VOLUME = {
+      Unit('litre', 'l'): 1,
+      Unit('millilitre', 'ml'): sympy.Rational(1, 1000),
+  }
 
 
-LENGTH = {
-    Unit('meter', 'm'): 1,
-    Unit('kilometer', 'km'): 1000,
-    Unit('centimeter', 'cm'): sympy.Rational(1, 100),
-    Unit('millimeter', 'mm'): sympy.Rational(1, 1000),
-    Unit('micrometer', 'um'): sympy.Rational(1, 1e6),
-    Unit('nanometer', 'nm'): sympy.Rational(1, 1e9),
-}
+elif os.environ.get('LANG') == 'ar':
+  MICRO_SYMBOL = 'u'
+  LENGTH = {
+      Unit('متر', 'م'): 1,
+      Unit('كيلومتر', 'كم'): 1000,
+      Unit('سنتيمتر', 'سم'): sympy.Rational(1, 100),
+      Unit('ملليمتر', 'مم'): sympy.Rational(1, 1000),
+      Unit('ميكرومتر', 'ميكرومتر'): sympy.Rational(1, 1e6),
+      Unit('نانومتر', 'نانومتر'): sympy.Rational(1, 1e9),
+  }
 
-TIME = {
-    Unit('second', 's'): 1,
-    Unit('minute', None): 60,
-    Unit('hour', None): 60*60,
-    Unit('day', None): 24*60*60,
-    Unit('week', None): 7*24*60*60,
-    Unit('millisecond', 'ms'): sympy.Rational(1, 1e3),
-    Unit('microsecond', MICRO_SYMBOL + 's'): sympy.Rational(1, 1e6),
-    Unit('nanosecond', 'ns'): sympy.Rational(1, 1e9),
-}
+  TIME = {
+      Unit('ثانية', 'ث'): 1,
+      Unit('دقيقة', 'د'): 60,
+      Unit('ساعة', 'س'): 60 * 60,
+      Unit('يوم', 'ي'): 24 * 60 * 60,
+      Unit('أسبوع', None): 7 * 24 * 60 * 60,
+      Unit('مللي ثانية', 'مللي ث'): sympy.Rational(1, 1e3),
+      Unit('ميكروثانية', MICRO_SYMBOL + 'ث'): sympy.Rational(1, 1e6),
+      Unit('نانوثانية', 'نانوث'): sympy.Rational(1, 1e9),
+  }
 
-TIME_YEARLY = {
-    Unit('year', None): 1,
-    Unit('decade', None): 10,
-    Unit('century', None): 100,
-    Unit('millennium', None): 1000,
-    Unit('month', None): sympy.Rational(1, 12),
-}
+  TIME_YEARLY = {
+      Unit('سنة', None): 1,
+      Unit('عقد', None): 10,
+      Unit('قرن', None): 100,
+      Unit('ألفية', None): 1000,
+      Unit('شهر', None): sympy.Rational(1, 12),
+  }
 
-MASS = {
-    Unit('kilogram', 'kg'): 1,  # Yes, the *kilo*gram is the SI base unit.
-    Unit('tonne', 't'): 1000,
-    Unit('gram', 'g'): sympy.Rational(1, 1e3),
-    Unit('milligram', 'mg'): sympy.Rational(1, 1e6),
-    Unit('microgram', MICRO_SYMBOL + 'g'): sympy.Rational(1, 1e9),
-    Unit('nanogram', 'ng'): sympy.Rational(1, 1e12),
-}
+  MASS = {
+      Unit('كيلوجرام', 'كجم'): 1,  # الكيلوجرام هو وحدة SI الأساسية.
+      Unit('طن', 'طن'): 1000,
+      Unit('جرام', 'جم'): sympy.Rational(1, 1e3),
+      Unit('ملليجرام', 'ملجم'): sympy.Rational(1, 1e6),
+      Unit('ميكروجرام', MICRO_SYMBOL + 'جم'): sympy.Rational(1, 1e9),
+      Unit('نانو جرام', 'نانو جم'): sympy.Rational(1, 1e12),
+  }
 
-VOLUME = {
-    Unit('litre', 'l'): 1,
-    Unit('millilitre', 'ml'): sympy.Rational(1, 1000),
-}
+  VOLUME = {
+      Unit('لتر', 'ل'): 1,
+      Unit('ملليلتر', 'مل'): sympy.Rational(1, 1000),
+  }
+
+
+else:
+  raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
 
 DIMENSIONS = [LENGTH, TIME, TIME_YEARLY, MASS, VOLUME]
