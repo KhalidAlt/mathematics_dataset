@@ -336,7 +336,7 @@ def is_prime(value, sample_args, context=None):
   
   return example.Problem(
       question=example.question(
-          context, template
+          context, template,
           integer=integer_entity.expression_else_handle,
           attribute=attribute_name),
       answer=answer)
@@ -376,6 +376,7 @@ def is_factor(value, sample_args, context=None):
     ]
   else:
     raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+  
   if maybe_factor == 2:
     if os.environ.get('LANG') == 'en':
       templates += [

@@ -230,9 +230,23 @@ def polynomial_roots(value, sample_args, context=None):
       expression = polynomial_entity.handle.apply(variable)
     factored = sympy.factor(
         polynomials.coefficients_to_polynomial(coeffs, variable))
-    template = random.choice([
-        'Factor {expression}.',
-    ])
+    
+    if os.environ.get('LANG') == 'en':
+
+      template = random.choice([
+          'Factor {expression}.',
+      ])
+
+
+    elif os.environ.get('LANG') == 'ar':
+
+      template = random.choice([
+          'حلل {expression}.',
+      ])
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return example.Problem(
         question=example.question(context, template, expression=expression),
         answer=factored)
@@ -289,6 +303,7 @@ def _solve_linear_system(degree, value, sample_args, context=None):
       template = random.choice([
           'Solve {equations} for {variable}.',
       ])
+      
     elif os.environ.get('LANG') == 'ar':
       template = random.choice([
           #'Solve {equations} for {variable}.',
@@ -307,10 +322,23 @@ def _solve_linear_system(degree, value, sample_args, context=None):
             variable=variable),
         answer)
   else:
+
+    if os.environ.get('LANG') == 'en':
+
+      description = 'Suppose {equations}.',
+      
+    elif os.environ.get('LANG') == 'ar':
+      description = 'افترض أن {equations}.'
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
+
     return composition.Entity(
         context=context,
         value=answer,
-        description='Suppose {equations}.',
+        description=description,
         handle=variable,
         equations=equations)
 
