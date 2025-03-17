@@ -758,9 +758,24 @@ def simplify_surd(value, sample_args, context=None):
   exp = _sample_surd(base, entropy, max_power=2, multiples_only=False)
   simplified = sympy.expand(sympy.simplify(exp))
 
-  template = random.choice([
-      'Simplify {exp}.',
-  ])
+  if os.environ.get('LANG') == 'en':
+
+    template = random.choice([
+        'Simplify {exp}.',
+    ])
+
+  elif os.environ.get('LANG') == 'ar':
+    template = random.choice([
+        'بسط ما يلي: {exp}.',
+        'بسط المعادلة التالية: {exp}',
+        'بسط العبارة:',
+        'بسط العبارة فيما يلي:',
+        'بسط كل عبارة فيما يأتي:',
+    ])
+  
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   return example.Problem(
       question=example.question(context, template, exp=exp),
       answer=simplified)
