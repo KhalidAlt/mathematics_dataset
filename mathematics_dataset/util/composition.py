@@ -226,12 +226,23 @@ def _polynomial_entity(value, context):
   polynomial = polynomials.coefficients_to_polynomial(coefficients, variables)
   polynomial = polynomial.sympy()
 
+  if os.environ.get('LANG') == 'en':
+
+    description = 'Let {function} = {polynomial}.'
+    
+  elif os.environ.get('LANG') == 'ar':
+    description = 'لتكن {function} = {polynomial}.'
+
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
   return Entity(
       context=context,
       value=value,
       expression=polynomial,
       polynomial_variables=variables,
-      description='Let {function} = {polynomial}.',
+      description=description,
       handle=handle,
       function=handle_description,
       polynomial=polynomial)
