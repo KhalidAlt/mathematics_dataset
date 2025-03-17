@@ -435,6 +435,8 @@ def div(value, sample_args, context=None):
           'احسب حاصل القسمة لما يلي {p} مقسوم على {q}.',
       ])
     
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
 
 
@@ -465,25 +467,67 @@ def nearest_integer_root(sample_args):
   value = number.integer(entropy, signed=False)
   answer = int(round(value ** (1 / one_over_exponent)))
 
-  templates = [
-      'What is {value} to the power of 1/{one_over_exponent}, to the nearest'
-      ' integer?',
-  ]
+  if os.environ.get('LANG') == 'en':
+    templates = [
+        'What is {value} to the power of 1/{one_over_exponent}, to the nearest'
+        ' integer?',
+    ]
+
+  elif os.environ.get('LANG') == 'ar':
+    templates = [
+      "ما قيمة {value} مرفوعًا للقوة 1/{one_over_exponent} ، مقربة لأقرب عدد صحيح؟"
+    ]
+
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+    
 
   if one_over_exponent != 2:  # "What is the second root of 4?" never used.
     ordinal = str()
-    templates += [
-        'What is the {ordinal} root of {value} to the nearest integer?',
-    ]
+    if os.environ.get('LANG') == 'en':
+      templates += [
+          'What is the {ordinal} root of {value} to the nearest integer?',
+      ]
 
+    elif os.environ.get('LANG') == 'ar':
+      templates += [
+          'احسب قيمة الجذر {ordinal} لـ {value}؟ قرب الإجابة لأقرب عدد صحيح.',
+      ]
+      
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+      
   if one_over_exponent == 2:
-    templates += [
-        'What is the square root of {value} to the nearest integer?',
-    ]
+    if os.environ.get('LANG') == 'en':
+      templates += [
+          'What is the square root of {value} to the nearest integer?',
+      ]
+    
+    elif os.environ.get("LANG") == 'ar':
+      templates += [
+          'احسب قيمة الجذر التربيعي لـ {value}؟ قرب الإجابة لأقرب عدد صحيح.',
+      ]
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
   elif one_over_exponent == 3:
-    templates += [
-        'What is the cube root of {value} to the nearest integer?',
-    ]
+    if os.environ.get('LANG') == 'en':
+
+      templates += [
+          'What is the cube root of {value} to the nearest integer?',
+      ]
+
+    elif os.environ.get("LANG") == 'ar':
+      templates += [
+          'احسب قيمة الجذر التكعيبي لـ {value}؟ قرب الإجابة لأقرب عدد صحيح.',
+      ]
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
 
   template = random.choice(templates)
 
