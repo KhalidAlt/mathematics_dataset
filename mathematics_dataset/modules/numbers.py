@@ -221,7 +221,13 @@ def round_number(value, sample_args, context=None):
 
   elif power == 0 and random.choice([False, True]):
     # Round to nearest integer.
-    description = 'the nearest integer'
+    if os.environ.get('LANG') =='en':
+      description = 'the nearest integer'
+    elif os.environ.get('LANG') == 'ar':
+      description = 'أقرب عدد صحيح'
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   else:
 
     if os.environ.get('LANG') == 'en':
