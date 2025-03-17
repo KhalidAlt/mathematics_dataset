@@ -342,10 +342,14 @@ def collect(value, sample_args, context=None):
   context.sample_by_replacing_constants(sample_args, unsimplified)
 
   if is_question:
+    
     if os.environ.get('LANG') == 'en':
       template = 'Collect the terms in {unsimplified}.'
+    
     elif os.environ.get('LANG') == 'ar':
-      template = 'اجمع الحدود في {unsimplified}.'
+      template = random.choice(['اجمع الحدود في {unsimplified}.',
+                                'اجمع الحدود فيما يلي {unsimplified}.',])
+      
     else:
       raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
     
@@ -409,9 +413,24 @@ def simplify_power(value, sample_args, context=None):
   unsimplified = polynomials.sample_messy_power(variable, entropy)
   answer = unsimplified.sympy()
 
-  template = random.choice([
-      'Simplify {unsimplified} assuming {variable} is positive.',
-  ])
+
+  if os.environ.get('LANG') == 'en':
+    template = random.choice([
+    'Simplify {unsimplified} assuming {variable} is positive.',
+    ])
+
+  
+  elif os.environ.get('LANG') == 'ar':
+    template = random.choice([
+        'بسط ما يلي {unsimplified} اذا علمت أن قيمة {variable} موجبة.',
+        'بسط العبارة التالية : {unsimplified} مع العلم أن {variable} قيمته موجبة.',
+        'بسط ما يلي {unsimplified} اذا افترضنا أن {variable} موجب.',
+        'قم بالتبسيط لما يلي {unsimplified} مع مراعاة أن قيمة {variable} موجبة.',
+    ])    
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
   return example.Problem(
       example.question(
           context, template, unsimplified=unsimplified, variable=variable),
