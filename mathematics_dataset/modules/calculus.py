@@ -225,10 +225,23 @@ def _differentiate_polynomial(value, sample_args, context, num_variables):
     fn_symbol = context.pop()
     variables_string = ', '.join(str(variable) for variable in variables)
     assert len(variables) == 1  # since below we don't specify var we diff wrt
+
+    if os.environ.get('LANG') == 'en':
+
+      description = 'Let {fn}({variables}) be the {nth} derivative of {eq}.'
+      
+    elif os.environ.get('LANG') == 'ar':
+      description = 'لتكن {fn}({variables}) هي المشتقة الـ{nth} للدالة {eq}.'
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
+
     return composition.Entity(
         context=context,
         value=composition.Polynomial(value),
-        description='Let {fn}({variables}) be the {nth} derivative of {eq}.',
+        description=description,
         handle=composition.FunctionHandle(fn_symbol),
         fn=fn_symbol, variables=variables_string, nth=nth, eq=polynomial)
 

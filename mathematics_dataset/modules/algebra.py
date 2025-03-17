@@ -325,7 +325,7 @@ def _solve_linear_system(degree, value, sample_args, context=None):
 
     if os.environ.get('LANG') == 'en':
 
-      description = 'Suppose {equations}.',
+      description = 'Suppose {equations}.'
       
     elif os.environ.get('LANG') == 'ar':
       description = 'افترض أن {equations}.'
