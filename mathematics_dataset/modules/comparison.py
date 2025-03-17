@@ -204,7 +204,7 @@ def _make_comparison_question(context, left, right):
         '>': [
             'هل {left} ' + ops.GT_SYMBOL + ' {right}؟',
             'هل {left} أكبر من {right}؟',
-            'هل {left} أعظم من {right}؟',
+            'هل {left} أعلى من {right}؟',
         ],
         '>=': [
             'هل {left} ' + ops.GE_SYMBOL + ' {right}؟',

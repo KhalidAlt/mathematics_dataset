@@ -460,11 +460,29 @@ def lcm(value, sample_args, context=None):
   if random.choice([False, True]):
     p, q = context.sample(sample_args, [p, q])
     # Ask the question directly.
-    adjective = random.choice(['least', 'lowest', 'smallest'])
-    template = random.choice([
-        'Calculate the {adjective} common multiple of {p} and {q}.',
-        'What is the {adjective} common multiple of {p} and {q}?',
-    ])
+    
+    if os.environ.get('LANG') == 'en':
+      adjective = random.choice(['least', 'lowest', 'smallest'])
+    elif os.environ.get('LANG') == 'en':
+      adjective = random.choice(['الأصغر', 'الأدنى', 'الأقل'])
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+    if os.environ.get('LANG') == 'en':
+      template = random.choice([
+          'Calculate the {adjective} common multiple of {p} and {q}.',
+          'What is the {adjective} common multiple of {p} and {q}?',
+      ])
+
+    elif os.environ.get('LANG') == 'ar':
+      template = random.choice([
+          'احسب {adjective} المضاعف المشترك للعددين {p} و {q}.',
+          'ما هو {adjective} المضاعف المشترك للعددين {p} و {q}؟',
+      ])
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return example.Problem(
         question=example.question(
             context, template, adjective=adjective, p=p.expression_else_handle,
@@ -476,11 +494,23 @@ def lcm(value, sample_args, context=None):
     q = number.integer(2, signed=True, coprime_to=q) / q
     p, q = context.sample(sample_args, [p, q])
 
-    template = random.choice([
-        'What is the common denominator of {p} and {q}?',
-        'Find the common denominator of {p} and {q}.',
-        'Calculate the common denominator of {p} and {q}.',
-    ])
+    if os.environ.get('LANG') == 'en':
+      template = random.choice([
+          'What is the common denominator of {p} and {q}?',
+          'Find the common denominator of {p} and {q}.',
+          'Calculate the common denominator of {p} and {q}.',
+      ])
+
+    elif os.environ.get('LANG') == 'ar':
+      template = random.choice([
+          'ما هو المقام المشترك بين {p} و {q}؟',
+          'أوجد المقام المشترك بين {p} و {q}.',
+          'احسب المقام المشترك بين {p} و {q}.',
+      ])     
+      
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+    
     return example.Problem(
         question=example.question(
             context, template, p=p.expression_else_handle,
