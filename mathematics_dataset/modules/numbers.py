@@ -31,7 +31,7 @@ import numpy as np
 import six
 from six.moves import range
 import sympy
-
+import os
 
 _ENTROPY_TRAIN = (3, 10)
 _ENTROPY_INTERPOLATE = (8, 8)
@@ -109,13 +109,39 @@ def place_value(value, sample_args, context=None):
   integer_as_string = str(integer)
   num_digits = len(integer_as_string)
 
-  firsts = ['', 'ten ', 'hundred ']
-  seconds = [
-      'thousands', 'millions', 'billions', 'trillions', 'quadrillions',
-      'quintillions', 'sextillions', 'septillions', 'octillions', 'nonillions',
-      'decillions',
-  ]
-  place_names = ['units', 'tens', 'hundreds']
+
+  if os.environ.get('LANG') == 'en':
+    firsts = ['', 'ten ', 'hundred ']
+    seconds = [
+        'thousands', 'millions', 'billions', 'trillions', 'quadrillions',
+        'quintillions', 'sextillions', 'septillions', 'octillions', 'nonillions',
+        'decillions',
+    ]
+    place_names = ['units', 'tens', 'hundreds']
+
+  elif os.environ.get('LANG') == 'ar':
+    firsts = ['', 'عشرة ', 'مائة ']
+
+    seconds = [
+        'آلاف',              # thousands
+        'ملايين',            # millions
+        'مليارات',           # billions
+        'تريليونات',         # trillions
+        'تريليونات',         # trillions (10^12 and beyond)
+        'كوادرليونات',       # quadrillions
+        'كوادريليونات',     # quintillions
+        'سكستيليونات',      # sextillions
+        'سبتيليونات',        # septillions
+        'أوكتيليونات',       # octillions
+        'نونيليونات',        # nonillions
+        'ديسيليونات',        # decillions
+    ]
+
+    place_names = ['آحاد', 'عشرات', 'مئات']
+
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   for second in seconds:
     for first in firsts:
       place_names.append(first + second)
