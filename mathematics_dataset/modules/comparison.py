@@ -344,8 +344,17 @@ def _kth_biggest_multichoice_question(context, entities, adjective, answer):
   """Ask for the biggest (or smallest, or second biggest, etc) of choices."""
   entity_dict, choices_template, answer_choice = _entities_to_choices(
       entities, answer)
+  
+  if os.environ.get('LANG') == 'en':
+    template = 'Which is the {adjective} value?' + choices_template
+  elif os.environ.get('LANG') == 'ar':
+    template = 'ما هي {adjective} قيمة؟' + choices_template
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
   question = example.question(
-      context, 'Which is the {adjective} value?' + choices_template,
+      context, template,
       adjective=adjective, **entity_dict)
   return example.Problem(question=question, answer=answer_choice)
 
@@ -399,11 +408,26 @@ def kth_biggest(sample_args, count=None):
   if random.choice([False, True]):
     # Do from biggest.
     answer = sorted_entities[-ordinal]
-    adjective = 'biggest'
+
+    if os.environ.get('LANG') == 'en':
+      adjective = 'biggest'
+    elif os.environ.get('LANG') == 'ar':
+      adjective = 'الأكبر'
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
+    
   else:
     # Do from smallest.
     answer = sorted_entities[ordinal - 1]
-    adjective = 'smallest'
+
+    if os.environ.get('LANG') == 'en':
+      adjective = 'smallest'
+    elif os.environ.get('LANG') == 'ar':
+      adjective = 'الأصغر'
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
   if ordinal > 1:
     adjective = str(display.StringOrdinal(ordinal)) + ' ' + adjective
@@ -432,9 +456,19 @@ def _closest_multichoice_question(context, entities, target, adjective, answer):
   entity_dict, choices_template, answer_choice = _entities_to_choices(
       entities, answer)
 
+
+  if os.environ.get('LANG') == 'en':
+    template = 'Which is the {adjective} to {target}?' + choices_template
+  elif os.environ.get('LANG') == 'ar':
+    template = 'أيُّهما {adjective} إلى {target}؟' + choices_template
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
+
   question = example.question(
       context,
-      'Which is the {adjective} to {target}?' + choices_template,
+      template,
       adjective=adjective, target=target, **entity_dict)
   return example.Problem(question=question, answer=answer_choice)
 
@@ -475,7 +509,13 @@ def closest(sample_args, count=None):
   min_difference = min(differences)
   answer_index = differences.index(min_difference)
   answer = entities[answer_index]
-  adjective = random.choice(['closest', 'nearest'])
+
+  if os.environ.get('LANG') == 'en':
+    adjective = random.choice(['closest', 'nearest'])
+  elif os.environ.get('LANG') == 'ar':
+    adjective = random.choice(['الأقرب', 'الأدنى'])
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
   if display_multichoice:
     return _closest_multichoice_question(
