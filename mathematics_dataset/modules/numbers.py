@@ -695,11 +695,23 @@ def base_conversion(min_entropy, max_entropy):
       min_entropy - entropy_used, max_entropy - entropy_used)
 
   value = number.integer(entropy, signed=True)
-  template = random.choice([
-      '{from_str} (base {from_base}) to base {to_base}',
-      'Convert {from_str} (base {from_base}) to base {to_base}.',
-      'What is {from_str} (base {from_base}) in base {to_base}?',
-  ])
+
+  if os.environ.get('LANG') == 'en':
+
+    template = random.choice([
+        '{from_str} (base {from_base}) to base {to_base}',
+        'Convert {from_str} (base {from_base}) to base {to_base}.',
+        'What is {from_str} (base {from_base}) in base {to_base}?',
+    ])
+
+  elif os.environ.get('LANG') == 'ar':
+    template = random.choice([
+        '{from_str} (بالأساس {from_base}) إلى الأساس {to_base}',
+        'حوّل {from_str} (بالأساس {from_base}) إلى الأساس {to_base}.',
+        'ما قيمة {from_str} (بالأساس {from_base}) في الأساس {to_base}؟',
+    ])
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
   return example.Problem(
       question=example.question(
           context, template,
