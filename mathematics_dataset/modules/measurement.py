@@ -191,6 +191,10 @@ def pluralize(name):
         'كيلوجرام': 'كيلوجرامات',
         'طن': 'أطنان',
     }
+
+    if name not in plurals.keys():
+      return name + 's'
+
   
   else:
     raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
@@ -302,13 +306,13 @@ def _conversion_fraction(context, is_train):
       break
   
   if os.environ.get('LANG') == 'en':
-      templates = random.choice([
+      template = random.choice([
       'How many {target_name} are there in {base_value} of a {base_name}?',
       'What is {base_value} of a {base_name} in {target_name}?',
       ])
 
   elif os.environ.get('LANG') == 'ar':
-      templates = random.choice([
+      template = random.choice([
     'كم {target_name} في {base_value} من {base_name}؟',
     'ما عدد الـ{target_name} في {base_value} من {base_name}؟',
                 ])
