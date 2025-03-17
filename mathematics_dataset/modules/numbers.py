@@ -411,10 +411,19 @@ def list_prime_factors(value, sample_args, context=None):
 
   (entity,) = context.sample(sample_args, [integer])
   prime_factors = sorted(sympy.factorint(integer).keys())
-  template = random.choice([
-      'What are the prime factors of {integer}?',
-      'List the prime factors of {integer}.',
-  ])
+  if os.environ.get('LANG') == 'en':
+    template = random.choice([
+        'What are the prime factors of {integer}?',
+        'List the prime factors of {integer}.',
+    ])
+  elif os.environ.get('LANG') == 'ar':
+    template = random.choice([
+        'ما هي العوامل الأولية للعدد {integer}؟',
+        'اكتب العوامل الأولية للعدد {integer}.',
+    ])    
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
   return example.Problem(
       question=example.question(
           context, template, integer=entity.expression_else_handle),
