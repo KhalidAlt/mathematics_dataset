@@ -378,7 +378,7 @@ def is_factor(value, sample_args, context=None):
     templates = [
         'هل {maybe_factor} عامل من عوامل {value}؟',
         'هل {value} من مضاعفات {maybe_factor}؟',
-        'هل {maybe_factor} يقسم {value}؟',
+        'هل {maybe_factor} يقبل القسمة على {value}؟',
     ]
   else:
     raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
@@ -470,7 +470,7 @@ def lcm(value, sample_args, context=None):
     
     if os.environ.get('LANG') == 'en':
       adjective = random.choice(['least', 'lowest', 'smallest'])
-    elif os.environ.get('LANG') == 'en':
+    elif os.environ.get('LANG') == 'ar':
       adjective = random.choice(['الأصغر', 'الأدنى', 'الأقل'])
     else:
       raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
