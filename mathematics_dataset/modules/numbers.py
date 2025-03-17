@@ -507,7 +507,7 @@ def lcm(value, sample_args, context=None):
           'أوجد المقام المشترك بين {p} و {q}.',
           'احسب المقام المشترك بين {p} و {q}.',
       ])     
-      
+
     else:
       raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
     
@@ -563,23 +563,53 @@ def gcd(value, sample_args, context=None):
 
   p, q = context.sample(sample_args, [p, q])
 
-  adjective = (random.choice(['greatest', 'highest']) + ' common '
-               + random.choice(['divisor', 'factor']))
+
+  if os.environ.get('LANG') == 'en':
+    adjective = (random.choice(['greatest', 'highest']) + ' common '
+                + random.choice(['divisor', 'factor']))
+
+
+  elif os.environ.get('LANG') == 'ar':
+    adjective = (random.choice(['أكبر', 'أعلى']) + ' قاسم مشترك '
+                + random.choice(['عامل', 'مقسوم عليه']))
+
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
   if is_question:
-    template = random.choice([
-        'Calculate the {adjective} of {p} and {q}.',
-        'What is the {adjective} of {p} and {q}?',
-    ])
+
+    if os.environ.get('LANG') == 'en':
+
+      template = random.choice([
+          'Calculate the {adjective} of {p} and {q}.',
+          'What is the {adjective} of {p} and {q}?',
+      ])
+
+    elif os.environ.get('LANG') == 'ar':
+      template = random.choice([
+        'احسب {adjective} للعددين {p} و {q}.',
+        'ما هو {adjective} للعددين {p} و {q}؟',     
+          ])
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return example.Problem(
         question=example.question(
             context, template, adjective=adjective, p=p, q=q),
         answer=value)
   else:
+
+    if os.environ.get('LANG') == 'en':
+      description='Let {self} be the {adjective} of {p} and {q}.',
+
+    elif os.environ.get('LANG') == 'ar':
+      description = 'لتكن {self} هي {adjective} للعددين {p} و {q}.'
+      
     return composition.Entity(
         context=context,
         value=value,
-        description='Let {self} be the {adjective} of {p} and {q}.',
+        description=description,
         adjective=adjective, p=p, q=q)
 
 
