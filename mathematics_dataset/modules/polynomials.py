@@ -31,7 +31,7 @@ from mathematics_dataset.util import composition
 import numpy as np
 from six.moves import range
 import sympy
-
+import os
 
 _ENTROPY_TRAIN = (3, 10)
 _ENTROPY_INTERPOLATE = (8, 8)
@@ -112,25 +112,49 @@ def coefficient_named(value, sample_args, context=None):
   value = coefficients[power]
   named_coeff = named_coeffs[power]
 
-  template = random.choice([
-      'Express {expression} as {canonical} and give {target}.',
-      'Rearrange {expression} to {canonical} and give {target}.',
-      'Express {expression} in the form {canonical} and give {target}.',
-      'Rearrange {expression} to the form {canonical} and give {target}.',
-  ])
+  if os.environ.get('LANG') == 'en':
+    template = random.choice([
+        'Express {expression} as {canonical} and give {target}.',
+        'Rearrange {expression} to {canonical} and give {target}.',
+        'Express {expression} in the form {canonical} and give {target}.',
+        'Rearrange {expression} to the form {canonical} and give {target}.',
+    ])
+  elif os.environ.get('LANG') == 'ar':
+    template = random.choice([
+        'اكتب {expression} على صورة {canonical} وأوجد {target}.',
+        'أعد ترتيب {expression} إلى {canonical} وأوجد {target}.',
+        'اكتب {expression} بالصورة {canonical} وأوجد {target}.',
+        'أعد ترتيب {expression} إلى الصورة {canonical} وأوجد {target}.',
+    ])    
+
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+  
   return example.Problem(
       question=example.question(
           context, template, expression=expression, canonical=canonical,
           target=named_coeff),
       answer=value)
 
+if os.environ.get('LANG') == 'en':
+  _TEMPLATES = [
+      'What is {composed}?',
+      'Calculate {composed}.',
+      'Give {composed}.',
+      'Determine {composed}.',
+  ]
 
-_TEMPLATES = [
-    'What is {composed}?',
-    'Calculate {composed}.',
-    'Give {composed}.',
-    'Determine {composed}.',
-]
+elif os.environ.get('LANG') == 'ar':
+
+  _TEMPLATES = [
+      'ما قيمة {composed}؟',
+      'احسب {composed}.',
+      'أعطِ {composed}.',
+      'حدد {composed}.',
+  ]
+
+else:
+  raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
 
 @composition.module(number.is_integer)
@@ -257,9 +281,21 @@ def expand(value, sample_args, context=None):
   entropy -= math.log10(max_order - min_order + 1)
   expression_ = polynomials.sample_with_brackets(variable, order, entropy)
   expanded = sympy.expand(expression_)
-  template = random.choice([
-      'Expand {expression}.'
-  ])
+  if os.environ.get('LANG') =='en':
+    template = random.choice([
+        'Expand {expression}.'
+    ])
+  elif os.environ.get('LANG') == 'ar':
+    template = random.choice([
+        'وسع {expression}.',
+        'فكك {expression}.',
+      'فك الأقواس في المعادلة الآتية: {expression}.',
+      'قم بإعادة ترتيب المعادلة {expression} باستخدام خاصية التوزيع',
+    ])
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+  
+
   return example.Problem(
       question=example.question(context, template, expression=expression_),
       answer=expanded)
@@ -306,7 +342,13 @@ def collect(value, sample_args, context=None):
   context.sample_by_replacing_constants(sample_args, unsimplified)
 
   if is_question:
-    template = 'Collect the terms in {unsimplified}.'
+    if os.environ.get('LANG') == 'en':
+      template = 'Collect the terms in {unsimplified}.'
+    elif os.environ.get('LANG') == 'ar':
+      template = 'اجمع الحدود في {unsimplified}.'
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+    
     return example.Problem(
         question=example.question(context, template, unsimplified=unsimplified),
         answer=simplified)
