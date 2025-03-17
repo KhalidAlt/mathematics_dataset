@@ -1,4 +1,3 @@
-```markdown
 # Mathematics Dataset
 
 This dataset code generates mathematical question and answer pairs, from a range
@@ -170,4 +169,4 @@ the mathematical learning and algebraic reasoning skills of learning models.</co
 </div>
 ```
 
----
+
