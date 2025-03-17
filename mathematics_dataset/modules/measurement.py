@@ -300,11 +300,24 @@ def _conversion_fraction(context, is_train):
         and sympy.denom(answer) == 1
         and (allow_zero or answer != 0)):
       break
-
-  template = random.choice([
+  
+  if os.environ.get('LANG') == 'en':
+      templates = random.choice([
       'How many {target_name} are there in {base_value} of a {base_name}?',
       'What is {base_value} of a {base_name} in {target_name}?',
-  ])
+      ])
+
+  elif os.environ.get('LANG') == 'ar':
+      templates += [
+          'كم عدد {target_name} في {base_value}{base_name}؟',
+          'ما هي قيمة {base_value}{base_name} بوحدة {target_name}؟',
+          'حول {base_value}{base_symbol} إلى {target_name}.',
+      ]
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
+  template = 
 
   if sympy.denom(base_value) > 20 or random.choice([False, True]):
     base_value_string = base_value  # Will be represented as e.g., 2/3.
