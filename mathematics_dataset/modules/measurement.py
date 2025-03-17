@@ -308,16 +308,15 @@ def _conversion_fraction(context, is_train):
       ])
 
   elif os.environ.get('LANG') == 'ar':
-      templates += [
-          'كم عدد {target_name} في {base_value}{base_name}؟',
-          'ما هي قيمة {base_value}{base_name} بوحدة {target_name}؟',
-          'حول {base_value}{base_symbol} إلى {target_name}.',
-      ]
+      templates = random.choice([
+    'كم {target_name} في {base_value} من {base_name}؟',
+    'ما عدد الـ{target_name} في {base_value} من {base_name}؟',
+                ])
+
   else:
     raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
 
-  template = 
 
   if sympy.denom(base_value) > 20 or random.choice([False, True]):
     base_value_string = base_value  # Will be represented as e.g., 2/3.
@@ -367,27 +366,63 @@ def time(is_train):
   which_question = random.randint(0, 3)
   if which_question == 0:
     # Question: What is start = end - duration?
-    template = random.choice([
-        'What is {duration} minutes before {end}?',
-    ])
+
+    if os.environ.get('LANG') == 'en':
+      template = random.choice([
+          'What is {duration} minutes before {end}?',
+      ])
+
+    elif os.environ.get('LANG') == 'ar':
+      template = random.choice([
+          'ما الوقت قبل {end} بـ{duration} دقيقة؟',
+      ])
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+    
     return example.Problem(
         question=example.question(
             context, template, duration=duration_minutes, end=end),
         answer=start)
   elif which_question == 1:
-    # Question: What is end = start + duration?
-    template = random.choice([
-        'What is {duration} minutes after {start}?',
-    ])
+
+    if os.environ.get('LANG') == 'en':
+      # Question: What is end = start + duration?
+      template = random.choice([
+          'What is {duration} minutes after {start}?',
+      ])
+
+
+    elif os.environ.get('LANG') == 'ar':
+
+      template = random.choice([
+          'ما الوقت بعد {duration} دقيقة من {end}؟',
+      ])
+
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return example.Problem(
         question=example.question(
             context, template, duration=duration_minutes, start=start),
         answer=end)
   else:
-    # Question: What is duration = end - start?
-    template = random.choice([
-        'How many minutes are there between {start} and {end}?',
-    ])
+
+    if os.environ.get('LANG') == 'en':
+
+      # Question: What is duration = end - start?
+      template = random.choice([
+          'How many minutes are there between {start} and {end}?',
+      ])
+
+    elif os.environ.get('LANG') == 'ar':
+
+      template = random.choice([
+          'كم دقيقة بين {start} و{end}؟',
+      ])
+    else:
+      raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
     return example.Problem(
         question=example.question(context, template, start=start, end=end),
         answer=duration_minutes)
