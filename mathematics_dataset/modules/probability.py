@@ -48,7 +48,7 @@ _SWR_SAMPLE_COUNT = [2, 4]
 _SWR_SAMPLE_COUNT_EXTRAPOLATE = [5, 5]
 
 _GERUNDS = {
-    'pick': 'picking',
+    'pick': 'اختيار',
 }
 
 
@@ -211,8 +211,8 @@ def _swr_space(is_train, sample_range):
   if os.environ.get('LANG') == 'en':
     template = ' letters picked without replacement from '
   elif os.environ.get('LANG') == 'ar':
-    template = random.choice(['حروف سحبت من المجموعة بحيث لا يعاد اختيار أي حرف تم اختياره مسبقاً',
-                              'حروف اختيرت من المجموعة دون تكرار أو إعادة اختيار'])
+    template = random.choice([' حروف سحبت من المجموعة بحيث لا يعاد اختيار أي حرف تم اختياره مسبقاً',
+                              ' حروف اختيرت من المجموعة دون تكرار أو إعادة اختيار'])
   else:
     raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
   

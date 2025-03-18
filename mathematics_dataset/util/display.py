@@ -35,7 +35,6 @@ import os
 import sympy
 
 if os.environ.get('LANG') == 'en':
-
   # For converting integers to words:
   _INTEGER_LOW = [
       'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
