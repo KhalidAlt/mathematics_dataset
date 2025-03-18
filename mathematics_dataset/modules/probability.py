@@ -103,7 +103,16 @@ def _sequence_event(values, length, verb):
   events = [probability.DiscreteEvent([sample]) for sample in samples]
   event = probability.FiniteProductEvent(events)
   sequence = ''.join(str(sample) for sample in samples)
-  event_description = 'sequence {sequence}'.format(sequence=sequence)
+  
+  if os.environ.get('LANG') == 'en':
+    description = 'sequence {sequence}'.format(sequence=sequence)
+  elif os.environ.get('LANG') == 'ar':
+    description = 'متتالية {sequence}'.format(sequence=sequence)
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+
+  event_description = description
   return event, event_description
 
 
@@ -198,9 +207,18 @@ def _swr_space(is_train, sample_range):
   random_variable = probability.FiniteProductRandomVariable(
       [sample.random_variable] * num_sampled)
 
+
+  if os.environ.get('LANG') == 'en':
+    template = ' letters picked without replacement from '
+  elif os.environ.get('LANG') == 'ar':
+    template = random.choice(['حروف سحبت من المجموعة بحيث لا يعاد اختيار أي حرف تم اختياره مسبقاً',
+                              'حروف اختيرت من المجموعة دون تكرار أو إعادة اختيار'])
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+  
   random_variable.description = (
       str(display.StringNumber(num_sampled))
-      + ' letters picked without replacement from '
+      + template
       + sample.bag_contents)
 
   return sample.letters_distinct, space, random_variable
