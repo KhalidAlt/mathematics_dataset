@@ -141,7 +141,15 @@ def _level_set_event(values, length, verb):
       for value in shuffled_values
       if counts_dict[value] > 0
   ]
-  counts_and_values = _word_series(counts_and_values)
+
+  if os.environ.get('LANG') == 'en':
+    conjunction = 'and'
+  elif os.environ.get('LANG') == 'ar':
+    conjunction = 'و'
+  else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
+  counts_and_values = _word_series(counts_and_values, conjunction)
   template = random.choice([
       '{verbing} {counts_and_values}',
   ])

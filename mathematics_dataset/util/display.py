@@ -319,7 +319,13 @@ class StringNumber(object):
         words = self._integer_to_words(den) + [word]
         if rem > 0:
           if rem < 100:
-            words.append('and')
+            if os.environ.get('LANG') == 'en':
+              words.append('and')
+            elif os.environ.get('LANG') == 'ar':
+              words.append('و')
+            else:
+              raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
+
           words += self._integer_to_words(rem)
         return words
 
