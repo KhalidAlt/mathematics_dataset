@@ -40,6 +40,9 @@ _EXTRAPOLATION_EXTRA_COUNT = 2
 
 _PROB_EQUAL = 0.2
 
+ar_bool = {'True': 'نعم',
+           'False': 'لا'}
+
 
 def _make_modules(entropy):
   """Returns modules given "difficulty" parameters."""
@@ -233,7 +236,7 @@ def _make_comparison_question(context, left, right):
   template = random.choice(templates[comparison])
   question = example.question(context, template, left=left, right=right)
   answer = comparisons[comparison](left.value, right.value)
-
+  answer = answer if os.environ.get('LANG') == 'en' else ar_bool[answer]
   return example.Problem(question=question, answer=answer)
 
 

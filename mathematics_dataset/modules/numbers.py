@@ -41,6 +41,8 @@ _ENTROPY_EXTRAPOLATE = (12, 12)
 # Number of module compositions appearing in train/test, and extrapolation data.
 _NUM_MODULES_COMPOSED = [2, 4]
 
+ar_bool = {'True': 'نعم',
+           'False': 'لا'}
 
 def _make_modules(entropy, num_modules_composed):
   """Returns modules given "difficulty" parameters."""
@@ -303,12 +305,12 @@ def is_prime(value, sample_args, context=None):
   if random.choice([False, True]):
     # Use the composite
     integer = composite
-    is_prime_ = False
+    is_prime_ = False if os.environ.get('LANG') == 'en' else 'لا'
   else:
     # Take the next prime after the composite, to ensure the same distribution
     # as composites. Do "composite - 4" so we occasionally see "2" as a prime.
     integer = sympy.ntheory.generate.nextprime(composite - 4)
-    is_prime_ = True
+    is_prime_ = True if os.environ.get('LANG') == 'en' else 'نعم'
 
   (integer_entity,) = context.sample(sample_args, [integer])
 
@@ -396,13 +398,14 @@ def is_factor(value, sample_args, context=None):
       raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
   template = random.choice(templates)
-
   answer = integer % maybe_factor == 0
+
+
   return example.Problem(
       question=example.question(
           context, template, maybe_factor=maybe_factor,
           value=entity.expression_else_handle),
-      answer=answer)
+      answer=answer if os.environ.get('LANG') == 'en' else ar_bool[str(answer)])
 
 
 def list_prime_factors(value, sample_args, context=None):
