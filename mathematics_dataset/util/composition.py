@@ -37,7 +37,15 @@ import os
 
 # Allowed symbols. Don't allow "e", as sympy can hang when printing it as a
 # function symbol (and it's reserved for exponent).
-_ALLOWED_SYMBOLS = set(string.ascii_lowercase).difference(set(['e']))
+if os.environ.get('LANG') == 'en':
+
+  _ALLOWED_SYMBOLS = set(string.ascii_lowercase).difference(set(['e']))
+
+elif os.environ.get('LANG') == 'ar':
+  _ALLOWED_SYMBOLS = arabic_letters = set('أبتثجحخدذرزسشصضطظعغفقكلمنهوي')
+
+else:
+    raise NotImplementedError("Please Enter ar or en. Other Languages is not supported yet.")
 
 
 class Polynomial(collections.namedtuple('Polynomial', ('coefficients'))):
